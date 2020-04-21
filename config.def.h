@@ -289,7 +289,6 @@ tagall(const Arg *arg)
 static Signal signals[] = {
 	/* signum           function */
 	{ "focusstack",     focusstack },
-	{ "focusurgent",    focusurgent },
 	{ "setmfact",       setmfact },
 	{ "togglebar",      togglebar },
 	{ "incnmaster",     incnmaster },
