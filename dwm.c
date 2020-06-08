@@ -219,6 +219,7 @@ static void focus(Client *c);
 static void focusin(XEvent *e);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
+static int issinglewin(const Arg *arg);
 static Atom getatomprop(Client *c, Atom prop);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
@@ -258,7 +259,16 @@ static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
 static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
-static void fullscreen(const Arg *arg);
+static void setgaps(int oh, int ov, int ih, int iv);
+static void incrgaps(const Arg *arg);
+static void incrigaps(const Arg *arg);
+static void incrogaps(const Arg *arg);
+static void incrohgaps(const Arg *arg);
+static void incrovgaps(const Arg *arg);
+static void incrihgaps(const Arg *arg);
+static void incrivgaps(const Arg *arg);
+static void togglegaps(const Arg *arg);
+static void defaultgaps(const Arg *arg);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
 static void setup(void);
@@ -266,6 +276,8 @@ static void seturgent(Client *c, int urg);
 static void show(Client *c);
 static void showhide(Client *c);
 static void sigchld(int unused);
+static void sighup(int unused);
+static void sigterm(int unused);
 static void spawn(const Arg *arg);
 static int stackpos(const Arg *arg);
 static Monitor *systraytomon(Monitor *m);
@@ -308,7 +320,6 @@ static void viewtoright(const Arg *arg);
 static Client *wintoclient(Window w);
 static Monitor *wintomon(Window w);
 static Client *wintosystrayicon(Window w);
-static void winview(const Arg* arg);
 static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
@@ -346,6 +357,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[UnmapNotify] = unmapnotify
 };
 static Atom wmatom[WMLast], netatom[NetLast], xatom[XLast];
+static int restart = 0;
 static int running = 1;
 static Cur *cursor[CurLast];
 static Clr **scheme;
@@ -1083,13 +1095,14 @@ focusstack(const Arg *arg)
 {
 	int i = stackpos(arg);
 	Client *c, *p;
-	if (issinglewin(arg)) {
-		focuswin(arg);
-		return;
-	}
+    if (i < 0 || selmon->sel->isfullscreen)
+        return;
 
-	if(i < 0)
-		return;
+    if (issinglewin(arg)) {
+        focuswin(arg);
+        return;
+    }
+
 	for(p = NULL, c = selmon->clients; c && (i || !ISVISIBLE(c));
 	    i -= ISVISIBLE(c) ? 1 : 0, p = c, c = c->next);
 	focus(c ? c : p);
@@ -1625,6 +1638,7 @@ pushstack(const Arg *arg) {
 void
 quit(const Arg *arg)
 {
+	if(arg->i) restart = 1;
 	running = 0;
 }
 
@@ -1986,18 +2000,111 @@ setfullscreen(Client *c, int fullscreen)
 	}
 }
 
-Layout *last_layout;
 void
-fullscreen(const Arg *arg)
+setgaps(int oh, int ov, int ih, int iv)
 {
-	if (selmon->showbar) {
-		for(last_layout = (Layout *)layouts; last_layout != selmon->lt[selmon->sellt]; last_layout++);
-		setlayout(&((Arg) { .v = &layouts[2] }));
-	} else {
-		setlayout(&((Arg) { .v = last_layout }));
-	}
-	togglebar(arg);
+	if (oh < 0) oh = 0;
+	if (ov < 0) ov = 0;
+	if (ih < 0) ih = 0;
+	if (iv < 0) iv = 0;
+
+	selmon->gappoh = oh;
+	selmon->gappov = ov;
+	selmon->gappih = ih;
+	selmon->gappiv = iv;
+	arrange(selmon);
 }
+
+void
+togglegaps(const Arg *arg)
+{
+	enablegaps = !enablegaps;
+	arrange(selmon);
+}
+
+void
+defaultgaps(const Arg *arg)
+{
+	setgaps(gappoh, gappov, gappih, gappiv);
+}
+
+void
+incrgaps(const Arg *arg)
+{
+	setgaps(
+		selmon->gappoh + arg->i,
+		selmon->gappov + arg->i,
+		selmon->gappih + arg->i,
+		selmon->gappiv + arg->i
+	);
+}
+
+void
+incrigaps(const Arg *arg)
+{
+	setgaps(
+		selmon->gappoh,
+		selmon->gappov,
+		selmon->gappih + arg->i,
+		selmon->gappiv + arg->i
+	);
+}
+
+void
+incrogaps(const Arg *arg)
+{
+	setgaps(
+		selmon->gappoh + arg->i,
+		selmon->gappov + arg->i,
+		selmon->gappih,
+		selmon->gappiv
+	);
+}
+
+void
+incrohgaps(const Arg *arg)
+{
+	setgaps(
+		selmon->gappoh + arg->i,
+		selmon->gappov,
+		selmon->gappih,
+		selmon->gappiv
+	);
+}
+
+void
+incrovgaps(const Arg *arg)
+{
+	setgaps(
+		selmon->gappoh,
+		selmon->gappov + arg->i,
+		selmon->gappih,
+		selmon->gappiv
+	);
+}
+
+void
+incrihgaps(const Arg *arg)
+{
+	setgaps(
+		selmon->gappoh,
+		selmon->gappov,
+		selmon->gappih + arg->i,
+		selmon->gappiv
+	);
+}
+
+void
+incrivgaps(const Arg *arg)
+{
+	setgaps(
+		selmon->gappoh,
+		selmon->gappov,
+		selmon->gappih,
+		selmon->gappiv + arg->i
+	);
+}
+
 
 void
 setlayout(const Arg *arg)
@@ -2037,6 +2144,9 @@ setup(void)
 
 	/* clean up any zombies immediately */
 	sigchld(0);
+
+	signal(SIGHUP, sighup);
+	signal(SIGTERM, sigterm);
 
 	/* init screen */
 	screen = DefaultScreen(dpy);
@@ -2157,6 +2267,20 @@ sigchld(int unused)
 	if (signal(SIGCHLD, sigchld) == SIG_ERR)
 		die("can't install SIGCHLD handler:");
 	while (0 < waitpid(-1, NULL, WNOHANG));
+}
+
+void
+sighup(int unused)
+{
+	Arg a = {.i = 1};
+	quit(&a);
+}
+
+void
+sigterm(int unused)
+{
+	Arg a = {.i = 0};
+	quit(&a);
 }
 
 void
@@ -2427,7 +2551,8 @@ void restoreotherwins(const Arg *arg) {
 	}
 }
 
-int issinglewin(const Arg *arg) {
+int
+issinglewin(const Arg *arg) {
 	Client *c = NULL;
 	int cot = 0;
 	int tag = selmon->tagset[selmon->seltags];
@@ -3016,27 +3141,6 @@ wintomon(Window w)
 	return selmon;
 }
 
-/* Selects for the view of the focused window. The list of tags */
-/* to be displayed is matched to the focused window tag list. */
-void
-winview(const Arg* arg){
-	Window win, win_r, win_p, *win_c;
-	unsigned nc;
-	int unused;
-	Client* c;
-	Arg a;
-
-	if (!XGetInputFocus(dpy, &win, &unused)) return;
-	while(XQueryTree(dpy, win, &win_r, &win_p, &win_c, &nc)
-	      && win_p != win_r) win = win_p;
-
-	if (!(c = wintoclient(win))) return;
-
-	a.ui = c->tags;
-	view(&a);
-}
-
-
 /* There's no way to check accesses to destroyed windows, thus those cases are
  * ignored (especially on UnmapNotify's). Other types of errors call Xlibs
  * default error handler, which may call exit. */
@@ -3160,6 +3264,7 @@ main(int argc, char *argv[])
 	scan();
 	runAutostart();
 	run();
+	if(restart) execvp(argv[0], argv);
 	cleanup();
 	XCloseDisplay(dpy);
 	return EXIT_SUCCESS;
