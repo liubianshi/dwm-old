@@ -19,9 +19,8 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const Bool viewontag         = True;    /* Switch view on tag switch */
 static const char *fonts[]          = { 
-    "Fira Code:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintfull",
-    "WenQuanYi Micro Hei:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintfull",
-    "SauceCodePro Nerd Font Mono:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintfull",
+    "FiraCode Nerd Font Mono:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintfull",
+    "WenQuanYi Micro Hei Mono:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintfull",
     "Noto Color Emoji:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintfull",
     "JoyPixels:pixelsize=24:antialias=true:autohint=true",
 };
