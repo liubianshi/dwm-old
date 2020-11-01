@@ -30,7 +30,8 @@ static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#ffffff";
 static const char col_cyan[]        = "#37474F";
-static const char col_border[]      = "#42A5F5";
+//static const char col_border[]      = "#42A5F5";
+static const char col_border[]      = "#F58842";
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
@@ -57,18 +58,26 @@ static const Rule rules[] = {
 	/* class          instance    title       tags mask     isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",         NULL,       NULL,       0,            1,          0,           0,        -1 },
 	{ "Firefox",      NULL,       NULL,       1 << 8,       0,          0,          -1,        -1 },
-	{ "St",           NULL,       NULL,       0,            0,          1,          -1,        -1 },
+	{ "St",           NULL,       NULL,       0,            0,          1,           0,        -1 },
+	{ "Alacritty",    NULL,       NULL,       0,            0,          1,           0,        -1 },
 	{ NULL,           NULL,  "Event Tester",  0,            1,          0,           1,        -1 }, /* xev */
     { "fzfmenu",      NULL,       NULL,       0,            1,          0,           1,        -1 },
+    { "Xfce4-appfinder", NULL,    NULL,       0,            1,          0,           1,        -1 },
+    { "VirtualBox Machine", NULL, NULL,       0,            1,          0,           1,        -1 },
     { "ncmpcpp",      NULL,       NULL,       0,            1,          0,           1,        -1 },
     { "blueman-manager", NULL,    NULL,       0,            1,          0,           1,        -1 },
     { NULL, "netease-cloud-music-gtk",  NULL, 0,            1,          0,           1,        -1 },
+    { NULL, "netease-cloud-music",      NULL, 0,            1,          0,           1,        -1 },
     { "Zotero",       NULL,       NULL,       1 << 3,       0,          0,           0,        -1 },
     { "Okular",       NULL,       NULL,       1 << 5,       0,          0,           0,        -1 },
     { "Wps",          NULL,       NULL,       1 << 2,       0,          0,           0,        -1 },
+    { "Steam",        NULL,       NULL,       1 << 7,       0,          0,           0,        -1 },
+    { "Vmplayer",     NULL,       NULL,       1 << 7,       0,          0,           0,        -1 },
     { "Zenity",       NULL,       NULL,       0,            1,          0,           1,        -1 },
-    { "R_x11",        NULL,       NULL,       0,            1,          0,           1,        -1 },
+    { "copyq",        NULL,       NULL,       0,            1,          0,           1,        -1 },
+    { "R_x11",        NULL,       NULL,       0,            0,          0,           1,        -1 },
     { "qutebrowser",  NULL,       NULL,       1 << 1,       0,          0,          -1,        -1 },
+    { "Brave-browser", NULL,      NULL,       1 << 1,       0,          0,          -1,        -1 },
 };
 
 /* layout(s) */
@@ -99,8 +108,8 @@ static const Layout layouts[] = {
     { MOD, XK_j,     ACTION##stack, {.i = INC(+1) } }, \
     { MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, \
     { MOD, XK_equal, ACTION##stack, {.i = 0 } }, \
-    { MOD, XK_x,     ACTION##stack, {.i = -1 } }, 
-    /*{ MOD, XK_Tab,   ACTION##stack, {.i = PREVSEL } }, \  */
+    { MOD, XK_Tab,   ACTION##stack, {.i = PREVSEL } }, \
+    { MOD, XK_x,     ACTION##stack, {.i = -1 } },
     /* { MOD, XK_a,     ACTION##stack, {.i = 1 } }, \ */
     /* { MOD, XK_z,     ACTION##stack, {.i = 2 } }, \ */
 
