@@ -71,7 +71,7 @@ static const Rule rules[] = {
     { "Zotero",       NULL,       NULL,       1 << 3,       0,          0,           0,        -1 },
     { "Okular",       NULL,       NULL,       1 << 5,       0,          0,           0,        -1 },
     { "Wps",          NULL,       NULL,       1 << 2,       0,          0,           0,        -1 },
-    { "Steam",        NULL,       NULL,       1 << 7,       0,          0,           0,        -1 },
+    { "Steam",        NULL,       NULL,       1 << 6,       0,          0,           0,        -1 },
     { "Vmplayer",     NULL,       NULL,       1 << 7,       0,          0,           0,        -1 },
     { "Zenity",       NULL,       NULL,       0,            1,          0,           1,        -1 },
     { "copyq",        NULL,       NULL,       0,            1,          0,           1,        -1 },
@@ -121,7 +121,9 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "127x20+300+0", NULL };
+//static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "127x20+300+0", NULL };
+//static const char *scratchpadcmd[] = { "alacritty", "-t", scratchpadname, "-d", "127", "20", NULL };
+static const char *scratchpadcmd[] = { "alacritty", "-t", scratchpadname, "-o", "window.dimensions.columns=127", "window.dimensions.lines=20", NULL };
 static Key keys[] = {
     /* modifier                      key        function        argument */
     STACKKEYS(MODKEY,           focus)
