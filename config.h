@@ -4,6 +4,7 @@
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int gappx     = 18;       /* gap pixel between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
@@ -97,6 +98,7 @@ static const Layout layouts[] = {
     { "[\\]",     dwindle },
     { "|M|",      centeredmaster },
     { ">M>",      centeredfloatingmaster },
+    { "[D]",      deck },
 };
 
 /* key definitions */
@@ -109,11 +111,10 @@ static const Layout layouts[] = {
 #define STACKKEYS(MOD,ACTION) \
     { MOD, XK_j,     ACTION##stack, {.i = INC(+1) } }, \
     { MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, \
-    { MOD, XK_equal, ACTION##stack, {.i = 0 } }, \
+    { MOD, XK_h,     ACTION##stack, {.i = 0 } }, \
     { MOD, XK_Tab,   ACTION##stack, {.i = PREVSEL } }, \
-    { MOD, XK_x,     ACTION##stack, {.i = -1 } },
-    /* { MOD, XK_a,     ACTION##stack, {.i = 1 } }, \ */
-    /* { MOD, XK_z,     ACTION##stack, {.i = 2 } }, \ */
+    { MOD, XK_x,     ACTION##stack, {.i = -1 } }, \
+    { MOD, XK_l,     ACTION##stack, {.i = 1 } }, 
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -161,6 +162,7 @@ static Key keys[] = {
     { MODKEY|ShiftMask,   XK_u,      setlayout, {.v = &layouts[4]} },
     { MODKEY,             XK_y,      setlayout, {.v = &layouts[5]} },
     { MODKEY|ShiftMask,   XK_y,      setlayout, {.v = &layouts[6]} },
+    { MODKEY,             XK_d,      setlayout, {.v = &layouts[7]} },
 
     { MODKEY,             XK_i,      incnmaster, {.i = +1 } },
     { MODKEY|ShiftMask,   XK_i,      incnmaster, {.i = -1 } },
@@ -172,13 +174,13 @@ static Key keys[] = {
     { MODKEY|ShiftMask,   XK_Return, togglescratch, {.v = scratchpadcmd } },
     { MODKEY,             XK_b,       togglebar, {0} },
 
-    { MODKEY,             XK_h,       focusmon,       {.i = -1 } },
-    { MODKEY,             XK_l,       focusmon,       {.i = +1 } },
-    { MODKEY|ShiftMask,   XK_h,       tagmon,         {.i = -1 } },
-    { MODKEY|ShiftMask,   XK_l,       tagmon,         {.i = +1 } },
-    { MODKEY,             XK_bracketleft,        rotatestack,    {.i = +1 } },
-    { MODKEY|ShiftMask,   XK_bracketleft,        rotatestack,    {.i = -1 } },
-    { MODKEY,             XK_bracketright,       hidewin,        {0} },
+    { MODKEY|ShiftMask,   XK_h,       focusmon,       {.i = -1 } },
+    { MODKEY|ShiftMask,   XK_l,       focusmon,       {.i = +1 } },
+    //{ MODKEY|ShiftMask,   XK_h,       tagmon,         {.i = -1 } },
+    //{ MODKEY|ShiftMask,   XK_l,       tagmon,         {.i = +1 } },
+    { MODKEY,             XK_bracketleft,        rotatestack,    {.i = -1 } },
+    { MODKEY|ShiftMask,   XK_bracketright,       rotatestack,    {.i = +1 } },
+    { MODKEY|ShiftMask,   XK_bracketleft,        hidewin,        {0} },
     { MODKEY|ShiftMask,   XK_bracketright,       restorewin,     {0} },
     { MODKEY,             XK_o,                  hideotherwins,  {0}},
     { MODKEY|ShiftMask,   XK_o,                  restoreotherwins, {0}},
