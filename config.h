@@ -122,7 +122,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "tabbed", "-cr", "2", "st", "-w", "", NULL };
 static const char scratchpadname[] = "scratchpad";
 //static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "127x20+300+0", NULL };
 //static const char *scratchpadcmd[] = { "alacritty", "-t", scratchpadname, "-d", "127", "20", NULL };
@@ -140,8 +140,7 @@ static Key keys[] = {
     TAGKEYS( XK_7, 6 )
     TAGKEYS( XK_8, 7 )
     TAGKEYS( XK_9, 8 )
-
-    { MODKEY,             XK_0,      view,      {.ui = ~0 } },
+{ MODKEY,             XK_0,      view,      {.ui = ~0 } },
     { MODKEY|ShiftMask,   XK_0,      tag,       {.ui = ~0 } },
     { MODKEY,             XK_comma,  viewtoleft,     {0} },
     { MODKEY|ShiftMask,   XK_comma,  tagtoleft,      {0} },
@@ -154,34 +153,34 @@ static Key keys[] = {
     { MODKEY,             XK_f,      togglefullscr, {0} },
     { MODKEY,             XK_space,  zoom,      {0} },
     { MODKEY|ShiftMask,   XK_space,  togglefloating,    {0} },
-    { MODKEY|ControlMask, XK_space,  setlayout, {.v = &layouts[1]} },
-
-    { MODKEY,             XK_t,      setlayout, {.v = &layouts[0]} },
-    { MODKEY|ShiftMask,   XK_t,      setlayout, {.v = &layouts[2]} },
-    { MODKEY,             XK_u,      setlayout, {.v = &layouts[3]} },
-    { MODKEY|ShiftMask,   XK_u,      setlayout, {.v = &layouts[4]} },
-    { MODKEY,             XK_y,      setlayout, {.v = &layouts[5]} },
-    { MODKEY|ShiftMask,   XK_y,      setlayout, {.v = &layouts[6]} },
-    { MODKEY,             XK_d,      setlayout, {.v = &layouts[7]} },
+    
+    { MODKEY,             XK_t,      setlayout,  {.v = &layouts[0]} },
+    { MODKEY|ControlMask, XK_space,  setlayout,  {.v = &layouts[1]} },
+    { MODKEY|ShiftMask,   XK_t,      setlayout,  {.v = &layouts[2]} },
+    { MODKEY,             XK_u,      setlayout,  {.v = &layouts[3]} },
+    { MODKEY|ShiftMask,   XK_u,      setlayout,  {.v = &layouts[4]} },
+    { MODKEY,             XK_y,      setlayout,  {.v = &layouts[5]} },
+    { MODKEY|ShiftMask,   XK_y,      setlayout,  {.v = &layouts[6]} },
+    { MODKEY,             XK_d,      setlayout,  {.v = &layouts[7]} },
 
     { MODKEY,             XK_i,      incnmaster, {.i = +1 } },
     { MODKEY|ShiftMask,   XK_i,      incnmaster, {.i = -1 } },
 
-    { MODKEY,             XK_a,      setmfact,       {.f = +0.02} },
-    { MODKEY|ShiftMask,   XK_a,      setmfact,      {.f = -0.02} },
+    { MODKEY,             XK_a,      setmfact,   {.f = +0.02} },
+    { MODKEY|ShiftMask,   XK_a,      setmfact,   {.f = -0.02} },
 
-    { MODKEY,             XK_Return, spawn,     {.v = termcmd } },
+    { MODKEY,             XK_Return, spawn,      {.v = termcmd } },
     { MODKEY|ShiftMask,   XK_Return, togglescratch, {.v = scratchpadcmd } },
-    { MODKEY,             XK_b,       togglebar, {0} },
+    { MODKEY,             XK_b,      togglebar, {0} },
 
-    { MODKEY|ShiftMask,   XK_h,       focusmon,       {.i = -1 } },
-    { MODKEY|ShiftMask,   XK_l,       focusmon,       {.i = +1 } },
-    //{ MODKEY|ShiftMask,   XK_h,       tagmon,         {.i = -1 } },
-    //{ MODKEY|ShiftMask,   XK_l,       tagmon,         {.i = +1 } },
-    { MODKEY,             XK_bracketleft,        rotatestack,    {.i = -1 } },
-    { MODKEY|ShiftMask,   XK_bracketright,       rotatestack,    {.i = +1 } },
-    { MODKEY|ShiftMask,   XK_bracketleft,        hidewin,        {0} },
-    { MODKEY|ShiftMask,   XK_bracketright,       restorewin,     {0} },
+    // { MODKEY|ShiftMask,   XK_h,       focusmon,       {.i = -1 } },
+    // { MODKEY|ShiftMask,   XK_l,       focusmon,       {.i = +1 } },
+    // { MODKEY|ShiftMask,   XK_h,       tagmon,         {.i = -1 } },
+    // { MODKEY|ShiftMask,   XK_l,       tagmon,         {.i = +1 } },
+    { MODKEY|ShiftMask,    XK_bracketleft,        rotatestack,    {.i = -1 } },
+    { MODKEY|ShiftMask,    XK_bracketright,       rotatestack,    {.i = +1 } },
+    { MODKEY,             XK_bracketright,       hidewin,        {0} },
+    { MODKEY,             XK_bracketleft,        restorewin,     {0} },
     { MODKEY,             XK_o,                  hideotherwins,  {0}},
     { MODKEY|ShiftMask,   XK_o,                  restoreotherwins, {0}},
 };
