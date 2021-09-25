@@ -77,6 +77,7 @@ static const Rule rules[] = {
     { "Vmplayer",     NULL,       NULL,       1 << 7,       0,          0,           0,        -1 },
     { "Zenity",       NULL,       NULL,       0,            1,          0,           1,        -1 },
     { "Display", "display",       NULL,       0,            1,          0,           1,        -1 },
+    { "scrcpy",   "scrcpy",       NULL,       1 << 6,       1,          0,           1,        -1 },
     { "copyq",        NULL,       NULL,       0,            1,          0,           1,        -1 },
     { "R_x11",        NULL,       NULL,       0,            0,          0,           1,        -1 },
     { "qutebrowser",  NULL,       NULL,       1 << 1,       0,          0,          -1,        -1 },
@@ -122,7 +123,8 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "tabbed", "-cr", "2", "st", "-w", "", NULL };
+//static const char *termcmd[]  = { "tabbed", "-cr", "2", "st", "-w", "", NULL };
+static const char *termcmd[]  = { "st", "", NULL };
 static const char scratchpadname[] = "scratchpad";
 //static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "127x20+300+0", NULL };
 //static const char *scratchpadcmd[] = { "alacritty", "-t", scratchpadname, "-d", "127", "20", NULL };
@@ -234,8 +236,7 @@ tagex(const Arg *arg)
 }
 
 void
-toggletagex(const Arg *arg)
-{
+toggletagex(const Arg *arg) {
     toggletag(&((Arg) { .ui = 1 << arg->ui }));
 }
 
@@ -277,6 +278,7 @@ static Signal signals[] = {
     /* signum           function */
     { "focusmon",       focusmon },
     { "focusstack",     focusstack },
+    { "movestack",      pushstack },
     { "focusurgent",    focusurgent }, 
     { "defaultgaps",    defaultgaps }, /* reset gaps back to default */
     { "togglegaps",     togglegaps },  /* toggle gaps on and off */
