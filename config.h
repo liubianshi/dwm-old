@@ -20,12 +20,12 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const Bool viewontag         = True;    /* Switch view on tag switch */
 static const char *fonts[]          = { 
-    "FiraCode Nerd Font Mono:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintfull",
-    "WenQuanYi Micro Hei Mono:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintfull",
-    "Noto Color Emoji:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintfull",
-    "JoyPixels:pixelsize=24:antialias=true:autohint=true",
+    "FiraCode Nerd Font Mono:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintslight",
+    "WenQuanYi Micro Hei Mono:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintslight",
+    "Noto Color Emoji:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintslight",
+    "JoyPixels:pixelsize=24:antialias=true:autohint=true:hintstyle:hintslight",
 };
-static const char dmenufont[]       = "monospace:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintfull";
+static const char dmenufont[]       = "monospace:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintslight";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -78,6 +78,7 @@ static const Rule rules[] = {
     { "Zenity",       NULL,       NULL,       0,            1,          0,           1,        -1 },
     { "Display", "display",       NULL,       0,            1,          0,           1,        -1 },
     { "scrcpy",   "scrcpy",       NULL,       1 << 6,       1,          0,           1,        -1 },
+    { "Emacs", "emacs", "doom-capture",       0,            1,          0,           1,        -1 },
     { "copyq",        NULL,       NULL,       0,            1,          0,           1,        -1 },
     { "R_x11",        NULL,       NULL,       0,            0,          0,           1,        -1 },
     { "qutebrowser",  NULL,       NULL,       1 << 1,       0,          0,          -1,        -1 },
