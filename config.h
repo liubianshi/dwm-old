@@ -3,7 +3,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int gappx     = 18;       /* gap pixel between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -15,7 +15,7 @@ static const unsigned int gappih    = 10;       /* horiz inner gap between windo
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
-static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
+static const int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const Bool viewontag         = True;    /* Switch view on tag switch */
@@ -26,21 +26,31 @@ static const char *fonts[]          = {
     "JoyPixels:pixelsize=24:antialias=true:autohint=true:hintstyle:hintslight",
 };
 static const char dmenufont[]       = "monospace:pixelsize=24:antialias=true:autohint:false:hint:ture:hintstyle:hintslight";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#ffffff";
-static const char col_cyan[]        = "#37474F";
-//static const char col_border[]      = "#42A5F5";
-static const char col_border[]      = "#F58842";
+
+#define wal "/home/liubianshi/.cache/wal/colors-wal-dwm.h" 
+#if __has_include(wal)
+#include wal
+#else
+static const char *colors[][3]      = {
+static const char col_gray1[] = "#031B29";
+static const char col_gray2[] = "#909188";
+static const char col_gray3[] = "#ced0c3";
+static const char col_gray4[] = "#98A695";
+static const char col_cyan1[] = "#505A5B";
+static const char col_cyan2[] = "#8E765A";
+static const char col_cyan3[] = "#D9AF64";
+
+static const char *colors[][3]      = {
+    /*               fg           bg           border                         */
+    [SchemeNorm] = { col_gray3,   col_gray1,   col_gray2 }, // unfocused wins
+    [SchemeSel]  = { col_gray4,   col_cyan1,   col_cyan3 },  // the focused win
+    [SchemeUrg]  = { col_gray4,   col_cyan2,   col_cyan2 },
+    [SchemeHid]  = { col_cyan1,   col_gray1,   col_gray2}, 
+};
+#endif
+
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
-static const char *colors[][3]      = {
-    /*               fg         bg         border   */
-    [SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-    [SchemeSel]  = { col_gray4, col_cyan,  col_border  },
-    [SchemeHid]  = { col_cyan,  col_gray1, col_border  },
-};
 static const unsigned int alphas[][3]      = {
     /*               fg      bg        border     */
     [SchemeNorm] = { OPAQUE, baralpha, borderalpha },
@@ -80,7 +90,7 @@ static const Rule rules[] = {
     { "scrcpy",   "scrcpy",       NULL,       1 << 6,       1,          0,           1,        -1 },
     { "Emacs", "emacs", "doom-capture",       0,            1,          0,           1,        -1 },
     { "copyq",        NULL,       NULL,       0,            1,          0,           1,        -1 },
-    { "R_x11",        NULL,       NULL,       0,            0,          0,           1,        -1 },
+    { "R_x11",        NULL,       NULL,       0,            1,          0,           1,        -1 },
     { "qutebrowser",  NULL,       NULL,       1 << 1,       0,          0,          -1,        -1 },
     { "Brave-browser", NULL,      NULL,       1 << 1,       0,          0,          -1,        -1 },
 };
@@ -123,7 +133,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan2, "-sf", col_gray1, NULL };
 //static const char *termcmd[]  = { "tabbed", "-cr", "2", "st", "-w", "", NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
@@ -150,8 +160,8 @@ static Key keys[] = {
     { MODKEY,             XK_period, viewtoright,    {0} },
     { MODKEY|ShiftMask,   XK_period, tagtoright,    {0} },
     { MODKEY,             XK_q,      killclient,    {0} },
-    { MODKEY|ShiftMask,   XK_q,      quit,       {0} },
-    { MODKEY|ControlMask|ShiftMask,  XK_q,       quit,  {1} },
+    { MODKEY|ShiftMask,   XK_q,      quit,       {1} },
+    { MODKEY|ControlMask|ShiftMask,  XK_q,       quit,  {0} },
     { MODKEY,             XK_r,      spawn,      {.v = dmenucmd } },
     { MODKEY,             XK_f,      togglefullscr, {0} },
     { MODKEY,             XK_space,  zoom,      {0} },
